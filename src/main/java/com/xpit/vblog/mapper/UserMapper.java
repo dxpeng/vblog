@@ -5,7 +5,6 @@ import com.xpit.vblog.entity.Role;
 import com.xpit.vblog.entity.User;
 import org.apache.ibatis.annotations.Param;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 
@@ -26,7 +25,7 @@ public interface UserMapper {
 
     int deleteUserRoleByUid(Long id);
 
-    int setUserRole(@Param("rids") Long[] rids);
+    int setUserRole(@Param("rids") Long[] rids,@Param("id") Long id);
 
     User getUserBId(@Param("id") Long id);
 }

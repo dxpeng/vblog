@@ -3,5 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xpit.vblog.mapper.CategoryMapper">
-
+    <select id="getAllCategories" resultType="com.xpit.vblog.entity.Category">
+SELECT * FROM category
+    </select>
+    <delete id="deleteCategoryByIds">
+        DELETE FROM category WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <update id="updateCategoryById" parameterType="com.xpit.vblog.entity.Category">
+        UPDATE category SET cateName=#{cateName} WHERE id=#{id}
+    </update>
+    <insert id="addCategory" parameterType="com.xpit.vblog.entity.Category">
+        INSERT INTO category SET date=#{date},cateName=#{cateName}
+    </insert>
 </mapper>

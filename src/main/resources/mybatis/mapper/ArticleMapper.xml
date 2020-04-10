@@ -96,9 +96,9 @@
         <result column="summary" property="summary"></result>
         <result column="nickname" property="nickname"></result>
         <result column="cateName" property="cateName"></result>
-        <collection column="tagName" property="tags" ofType="com.xpit.vblog.entity.Tags">
-            <id property="id" column="tid"></id>
-            <result property="tagName"></result>
+        <collection property="tags" ofType="com.xpit.vblog.entity.Tags" column="tagName">
+            <id property="id" column="id"></id>
+            <result property="tagName" column="tagName"></result>
         </collection>
     </resultMap>
 

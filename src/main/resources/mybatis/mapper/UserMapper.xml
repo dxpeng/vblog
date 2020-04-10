@@ -3,5 +3,65 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xpit.vblog.mapper.UserMapper">
+    <select id="loadUserByUsername" resultType="com.xpit.vblog.entity.User">
+SELECT * FROM user WHERE username=#{username}
+</select>
+    <insert id="reg" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user SET username=#{username},password=#{password},nickname=#{nickname}
+    </insert>
+    <update id="updateUserEmail">
+        UPDATE user SET email=#{email} WHERE id=#{id}
+    </update>
+    <select id="getUserByNickname" resultType="com.xpit.vblog.entity.User">
+        SELECT u.*,r.`id` AS rid,r.`name` AS rname FROM user u,roles r,roles_user ru WHERE
+        u.`id`=ru.`uid` AND r.`id`=ru.`rid` AND u.`id` NOT IN(SELECT u.`id` FROM user u, roles_user ru WHERE
+        u.`id`=ru.`uid` AND ru.`rid=1`)
+        <choose>
+            <when test="nickname != null and nickname != ''">
+                AND u.nickname like connect ('%',#{nickname},'%') ORDER BY u.`id`
+            </when>
+            <otherwise>
+                ORDER BY u.`id` limit 20
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getUserBId" resultMap="BaseResultMap">
+        SELECT u.*,r.`id` AS rid,r.`name` AS rname FROM user u,roles r,roles_user ru WHERE
+        u.`id`=ru.`uid` AND r.`id`=ru.`rid` AND u.`id`=#{id}
+    </select>
+    <resultMap id="BaseResultMap" type="com.xpit.vblog.entity.User">
+        <id column="id" property="id"></id>
+        <result column="username" property="username"></result>
+        <result column="nickname" property="nickname"></result>
+        <result column="password" property="password"></result>
+        <result column="enabled" property="enabled"></result>
+        <result column="email" property="email"></result>
+        <result column="userface" property="userface"></result>
+        <result column="regTime" property="regTime"></result>
+        <collection property="roles" ofType="com.xpit.vblog.entity.Role">
+            <id column="rid" property="id"></id>
+            <result column="rname" property="name"></result>
+        </collection>
+    </resultMap>
+
+    <select id="getAllRole" resultType="com.xpit.vblog.entity.Role">
+        SELECT * FROM roles
+    </select>
+
+    <update id="updateUserByEnabled">
+        UPDATE user SET enabled=#{enabled} WHERE id=#{uid}
+    </update>
+
+    <delete id="deleteUserRoleByUid">
+        DELETE FROM roles_user WHERE uid=#{id}
+    </delete>
+
+    <insert id="setUserRole">
+        INSERT INTO roles_user(rid,uid) VALUES
+        <foreach collection="rids" item="rid" separator=",">
+            (#{rid},#{id})
+        </foreach>
+    </insert>
 
 </mapper>

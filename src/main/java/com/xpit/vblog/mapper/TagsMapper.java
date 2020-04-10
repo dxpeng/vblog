@@ -11,5 +11,5 @@ public interface TagsMapper {
 
     List<Long> getTagsIdByTagsName(@Param("tagNames") String[] tagNames);
 
-    int saveTags2ArticleTags(@Param("tagIds") Long[] tagIds, @Param("aid") Long aid);
+    int saveTags2ArticleTags(@Param("tagIds") List<Long> tagIds, @Param("aid") Long aid);
 }

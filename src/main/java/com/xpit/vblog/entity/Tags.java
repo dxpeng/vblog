@@ -10,7 +10,7 @@ public class Tags {
     @ApiModelProperty(value = "标签id")
     private Long id;
     @ApiModelProperty(value = "标签名称")
-    private String name;
+    private String tagName;
 
     public Tags() {
     }
